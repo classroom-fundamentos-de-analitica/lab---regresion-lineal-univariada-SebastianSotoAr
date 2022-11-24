@@ -31,10 +31,10 @@ def pregunta_01():
     print(X.shape)
 
     # Transforme `y` a un array de numpy usando reshape
-    y_reshaped = y.reshape(y.shape[0], 1)
+    y_reshaped = y.reshape(len(y.images), 1)
 
     # Trasforme `X` a un array de numpy usando reshape
-    X_reshaped = X.reshape(X.shape[0], 1)
+    X_reshaped = X.reshape(len(X.images), 1)
 
     # Imprima las nuevas dimensiones de `y`
     print(y_reshaped.shape)
