@@ -95,10 +95,10 @@ def pregunta_03():
 
     # Cree El espacio de predicción. Esto es, use linspace para crear
     # un vector con valores entre el máximo y el mínimo de X_fertility
-    prediction_space = make_pipeline(
+    prediction_space = np.array(make_pipeline(
         PolynomialFeatures(X_fertility),
         reg,
-    )
+    )).reshape(139, 1)
 
     # Entrene el modelo usando X_fertility y y_life
     reg.fit(X_fertility, y_life)
