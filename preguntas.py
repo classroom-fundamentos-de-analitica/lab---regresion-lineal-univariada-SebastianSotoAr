@@ -98,7 +98,7 @@ def pregunta_03():
     prediction_space = np.array(make_pipeline(
         PolynomialFeatures(X_fertility),
         reg,
-    )).reshape(139, 1)
+    )).reshape(1, -1)
 
     # Entrene el modelo usando X_fertility y y_life
     reg.fit(X_fertility, y_life)
