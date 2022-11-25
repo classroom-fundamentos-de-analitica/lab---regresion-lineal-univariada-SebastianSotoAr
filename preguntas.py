@@ -80,25 +80,23 @@ def pregunta_03():
     df = pd.read_csv("gm_2008_region.csv")
 
     # Asigne a la variable los valores de la columna `fertility`
-    X_fertility = df["fertility"]
+    X_fertility = df["fertility"].values.reshape(-1,1)
 
     # Asigne a la variable los valores de la columna `life`
-    y_life = df["life"]
+    y_life = df["life"].values.reshape(-1,1)
 
     # Importe LinearRegression
     from sklearn.linear_model import LinearRegression
-    from sklearn.pipeline import make_pipeline
-    from sklearn.preprocessing import PolynomialFeatures
 
     # Cree una instancia del modelo de regresión lineal
     reg = LinearRegression()
 
     # Cree El espacio de predicción. Esto es, use linspace para crear
     # un vector con valores entre el máximo y el mínimo de X_fertility
-    prediction_space = np.array(make_pipeline(
-        PolynomialFeatures(X_fertility),
-        reg,
-    )).reshape(1, -1)
+    prediction_space = np.linspace(
+        min(X_fertility),
+        max(X_fertility),
+    ).reshape(-1,1)
 
     # Entrene el modelo usando X_fertility y y_life
     reg.fit(X_fertility, y_life)
@@ -107,7 +105,7 @@ def pregunta_03():
     y_pred = reg.predict(prediction_space)
 
     # Imprima el R^2 del modelo con 4 decimales
-    print(y_pred.score(X_fertility, y_life).round(4))
+    print(reg.score(X_fertility, y_life).round(4))
 
 
 def pregunta_04():
@@ -119,25 +117,25 @@ def pregunta_04():
     # Importe LinearRegression
     # Importe train_test_split
     # Importe mean_squared_error
-    from sklearn.model_selection import train_test_split
     from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import train_test_split
     from sklearn.metrics import mean_squared_error
 
     # Lea el archivo `gm_2008_region.csv` y asignelo al DataFrame `df`
-    df = pd.read_csv("gm_2008_region.csv")
+    df = pd.read_csv("gm_2008_region.csv", sep=",", header=0)
 
     # Asigne a la variable los valores de la columna `fertility`
-    X_fertility = df["fertility"].array
+    X_fertility = df["fertility"].values.reshape(-1,1)
 
     # Asigne a la variable los valores de la columna `life`
-    y_life = df["life"].array
+    y_life = df["life"].values.reshape(-1,1)
 
     # Divida los datos de entrenamiento y prueba. La semilla del generador de números
     # aleatorios es 53. El tamaño de la muestra de entrenamiento es del 80%
     (X_train, X_test, y_train, y_test,) = train_test_split(
         X_fertility,
         y_life,
-        test_size=0.8,
+        test_size=0.2,
         random_state=53,
     )
 
@@ -145,18 +143,22 @@ def pregunta_04():
     linearRegression = LinearRegression()
 
     # Entrene el clasificador usando X_train y y_train
-    linearRegression.fit(X_test, y_train)
+    linearRegression.fit(X_train, y_train)
 
     # Pronostique y_test usando X_test
     y_pred = linearRegression.predict(X_test)
 
     # Compute and print R^2 and RMSE
     print("R^2: {:6.4f}".format(linearRegression.score(X_test, y_test)))
-    rmse = np.sqrt(np.power(y_pred, 2))
+    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
     print("Root Mean Squared Error: {:6.4f}".format(rmse))
 
 if __name__ == "__main__":
+    print("----------------punto 1----------------")
     pregunta_01()
+    print("----------------punto 2----------------")
     pregunta_02()
+    print("----------------punto 3----------------")
     pregunta_03()
+    print("----------------punto 4----------------")
     pregunta_04()
